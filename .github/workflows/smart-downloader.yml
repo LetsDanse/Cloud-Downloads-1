@@ -4,10 +4,16 @@ on:
   workflow_dispatch:
     inputs:
       file_url:
-        description: 'Direct Link to File'
+        description: 'Direct Link to download'
         required: true
-        type: string
-
+      folder_name:
+        description: 'Folder name from OctoFetch'
+        required: false
+        default: 'downloads'
+      safe_mode:
+        description: 'Safe mode from OctoFetch'
+        required: false
+        default: 'false'
 jobs:
   build:
     runs-on: ubuntu-latest
