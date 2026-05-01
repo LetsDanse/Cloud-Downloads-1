@@ -26,16 +26,15 @@ async def main():
             file_path = os.path.abspath(os.path.join(parts_dir, file_name))
             print(f"Starting upload: {file_name}")
             
-            try:
-                # ارسال مستقیم با آدرس فایل (String)
-                await app.send_document(
-                    object_guid=target_guid,
-                    file=file_path,  # آدرس مستقیم فایل
-                    caption=f"File: {file_name}"
-                )
-                print(f"Successfully sent: {file_name}")
-            except Exception as e:
-                print(f"Error sending {file_name}: {e}")
+
+            # ارسال مستقیم با آدرس فایل (String)
+            await app.send_document(
+                object_guid=target_guid,
+                document=file_path,  # آدرس مستقیم فایل
+                caption=f"File: {file_name}"
+            )
+            print(f"Successfully sent: {file_name}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())
