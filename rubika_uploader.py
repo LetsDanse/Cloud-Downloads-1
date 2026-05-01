@@ -3,10 +3,8 @@ import os
 import logging
 from rubpy import Client
 
-
-# تنظیمات لاگ برای جلوگیری از نشت اطلاعات حساس و تمیز بودن کنسول
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
-logging.getLogger("rubpy").setLevel(logging.WARNING)
+# تنظیمات لاگ برای مشاهده وضعیت آپلود
+logging.basicConfig(level=logging.INFO)
 
 async def main():
     # نام سشن که توسط گیت‌هاب بازیابی می‌شود
@@ -24,8 +22,6 @@ async def main():
             print("No files found to upload!")
             return
 
-        print(f"Found {len(files)} parts. Starting upload...")
-        
         for file_name in files:
             file_path = os.path.abspath(os.path.join(parts_dir, file_name))
             print(f"Starting upload: {file_name}")
