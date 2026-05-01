@@ -3,35 +3,39 @@ import os
 import logging
 from rubpy import Client
 
+# تنظیمات لاگ برای مشاهده وضعیت آپلود
 logging.basicConfig(level=logging.INFO)
-logging.getLogger("rubpy").setLevel(logging.WARNING)
 
-async def upload_parts():
-    # سشن از طریق متغیر محیطی که گیت‌هاب می‌سازد خوانده می‌شود
-    session_data = os.getenv("hadi") 
+async def main():
+    # نام سشن که توسط گیت‌هاب بازیابی می‌شود
+    session_name = "hadi"
     
-    async with Client(name=session_data) as app:
+    async with Client(name=session_name) as app:
         me = await app.get_me()
         target_guid = me.user.user_guid
         
-        # مسیر پوشه‌ای که تکه‌های فایل در آن هستند
-        folder_path = "downloads/parts"
-        files = sorted(os.listdir(folder_path))
+        parts_dir = "downloads/parts"
+        # لیست کردن و مرتب‌سازی تکه‌ها برای ارسال به ترتیب درست
+        files = sorted(os.listdir(parts_dir))
+        
+        if not files:
+            print("No files found to upload!")
+            return
 
         for file_name in files:
-            full_path = os.path.join(folder_path, file_name)
-            logging.info(f"Sending to Rubika: {file_name}")
+            file_path = os.path.abspath(os.path.join(parts_dir, file_name))
+            print(f"Starting upload: {file_name}")
             
             try:
-                # آپلود و ارسال
+                # ارسال مستقیم با آدرس فایل (String)
                 await app.send_document(
                     object_guid=target_guid,
-                    document=full_path,
-                    caption=f"Part: {file_name}"
+                    file=file_path,  # آدرس مستقیم فایل
+                    caption=f"File: {file_name}"
                 )
-                logging.info(f"Finished: {file_name}")
+                print(f"Successfully sent: {file_name}")
             except Exception as e:
-                logging.error(f"Failed to upload {file_name}: {e}")
+                print(f"Error sending {file_name}: {e}")
 
 if __name__ == "__main__":
-    asyncio.run(upload_parts())
+    asyncio.run(main())
