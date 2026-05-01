@@ -28,10 +28,6 @@ async def upload_task(app, target_guid, file_path, file_name):
 async def main():
     # نام سشن که توسط گیت‌هاب بازیابی می‌شود
     session_name = "user_session"
-    
-    if not session_name:
-        print("Error: RUBIKA_SESSION_NAME environment variable is not set!")
-        return
 
     async with Client(name=session_name) as app:
         # دریافت GUID خود کاربر (Saved Messages)
