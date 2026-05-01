@@ -56,5 +56,3 @@ jobs:
 
       - name: Run Uploader
         run: python rubika_uploader.py
-        env:
-          RUBIKA_SESSION_NAME: "user_session"
