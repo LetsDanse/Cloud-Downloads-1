@@ -29,23 +29,16 @@ jobs:
       - name: Install Dependencies
         run: pip install rubpy
 
-      - name: Install aria2
-        run: sudo apt-get install aria2
-      
-      - name: Download File with aria2c
+      - name: Download File
         run: |
           mkdir -p downloads/parts
-          # نصب aria2
-          sudo apt-get update && sudo apt-get install -y aria2
-          
-          # دانلود پرسرعت با 16 اتصال همزمان
-          aria2c -x 16 -s 16 -k 1M --console-log-level=error --summary-interval=10 "${{ github.event.inputs.file_url }}" -d "downloads" -o "main_file"
+          # دانلود فایل با نام اصلی
+          curl -L "${{ github.event.inputs.file_url }}" -o "downloads/main_file"
 
-
-      - name: Split File (1.99GB Chunks)
+      - name: Split File (1.9GB Chunks)
         run: |
           # تقسیم فایل به قطعات 1900 مگابایتی برای رعایت محدودیت 2 گیگ روبیکا
-          split -b 1000M -d "downloads/main_file" "downloads/parts/part_"
+          split -b 1900M -d "downloads/main_file" "downloads/parts/part_"
           # حذف فایل اصلی برای خالی شدن فضا
           rm "downloads/main_file"
 
