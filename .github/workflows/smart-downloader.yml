@@ -56,7 +56,3 @@ jobs:
 
       - name: Run Uploader
         run: python rubika_uploader.py
-
-      - name: Notify Success
-        if: success() # فقط اگر آپلودر با موفقیت (exit 0) تمام شد اجرا شود
-        run: echo "Everything uploaded perfectly!"
