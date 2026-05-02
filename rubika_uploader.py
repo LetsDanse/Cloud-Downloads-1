@@ -34,7 +34,7 @@ async def main():
                 caption=f"File: {file_name}"
             )
             print(f"Successfully sent: {file_name}")
-
+            await asyncio.sleep(1000)
 
 if __name__ == "__main__":
     asyncio.run(main())
