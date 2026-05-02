@@ -4,16 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       file_url:
-        description: 'Direct Link to download'
+        description: 'لینک فایل:'
         required: true
-      folder_name:
-        description: 'Folder name from OctoFetch'
+      part_size:
+        description: 'سایز هر فایل به مگابایت از 100 تا 1990 (1000 توصیه میشود)'
         required: false
-        default: 'downloads'
-      safe_mode:
-        description: 'Safe mode from OctoFetch'
-        required: false
-        default: 'false'
+        default: 1000
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,19 +29,15 @@ jobs:
       - name: Download File
         run: |
           mkdir -p downloads/parts
-          # دانلود فایل با نام اصلی
           curl -L "${{ github.event.inputs.file_url }}" -o "downloads/main_file"
 
-      - name: Split File (1.9GB Chunks)
+      - name: Split File (1GB Chunks)
         run: |
-          # تقسیم فایل به قطعات 1900 مگابایتی برای رعایت محدودیت 2 گیگ روبیکا
-          split -b 1000M -d "downloads/main_file" "downloads/parts/part_"
-          # حذف فایل اصلی برای خالی شدن فضا
+          split -b ${{ github.event.inputs.part_size }}M -d "downloads/main_file" "downloads/parts/part_"
           rm "downloads/main_file"
 
       - name: Restore Rubika Session
         run: |
-          # تبدیل کد Base64 ذخیره شده در Secrets به فایل سشن واقعی
           echo "${{ secrets.SESSION_FILE_BASE64 }}" | base64 -d > user_session.rp
 
       - name: Run Uploader
