@@ -38,7 +38,7 @@ jobs:
       - name: Split File (1.9GB Chunks)
         run: |
           # تقسیم فایل به قطعات 1900 مگابایتی برای رعایت محدودیت 2 گیگ روبیکا
-          split -b 500M -d "downloads/main_file" "downloads/parts/part_"
+          split -b 1000M -d "downloads/main_file" "downloads/parts/part_"
           # حذف فایل اصلی برای خالی شدن فضا
           rm "downloads/main_file"
 
